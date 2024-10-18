@@ -7,7 +7,7 @@ export default async function Index() {
   return (
     <>
       <Hero/>
-      <main className="flex-1 flex flex-col gap-6 px-4">
+      <main className="w-1/2 flex-1 flex flex-col self-center gap-6 px-4">
         {hasEnvVars ? (<>
             <h2 className="font-medium text-xl mb-4">Select a report</h2>
             <OlapReports/>
