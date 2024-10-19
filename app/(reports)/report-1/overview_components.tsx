@@ -25,23 +25,7 @@ import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent,} from "@
 import * as React from "react"
 import {TrendingDown} from "lucide-react"
 
-interface ChartsProps {
-  data: {
-    freeGames: number
-    paidGames: number
-    windowsGames: number
-    macGames: number
-    linuxGames: number
-    topdevs: { developer_name: string, total_estimated_owners: number, total_revenue: number }[]
-    toppubs: { publisher_name: string, total_estimated_owners: number, total_revenue: number }[]
-    gamesReleased: { release_year: number, game_count: number }[]
-    highestGameUpvotes: { name: string, positive: number, negative: number }
-    highestGameDownvotes: { name: string, positive: number, negative: number }
-    trendingGenres: { genre_name: string, avg_playtime_2weeks: number, genreID: number }[]
-  }
-}
-
-export async function Charts({data}: ChartsProps) {
+export async function Charts({data}) {
   const chartData = [
     {cat: "free", games: data.freeGames, fill: "var(--color-free)"},
     {cat: "paid", games: data.paidGames, fill: "var(--color-paid)"},
@@ -140,7 +124,6 @@ export async function Charts({data}: ChartsProps) {
 
   const trendingGenreConfig = data.trendingGenres.reduce((config, item, index) => {
     const colorIndex = (index % 5) + 1;
-    // @ts-ignore
     config[item.genreID] = {
       label: item.genre_name,
       color: `hsl(var(--chart-${colorIndex}))`,
