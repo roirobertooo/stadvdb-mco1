@@ -20,12 +20,30 @@ import {
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
-import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent,} from "@/components/ui/chart"
+import {ChartContainer, ChartTooltip, ChartTooltipContent,} from "@/components/ui/chart"
 
 import * as React from "react"
 import {TrendingDown} from "lucide-react"
 
-export async function Charts({data}) {
+interface ChartData {
+  freeGames: number;
+  paidGames: number;
+  windowsGames: number;
+  macGames: number;
+  linuxGames: number;
+  topdevs: Array<{ developer_name: string; total_estimated_owners: number; total_revenue: number }>;
+  toppubs: Array<{ publisher_name: string; total_estimated_owners: number; total_revenue: number }>;
+  gamesReleased: Array<{ release_year: number; game_count: number }>;
+  highestGameUpvotes: { name: string; positive: number; negative: number };
+  highestGameDownvotes: { name: string; positive: number; negative: number };
+  trendingGenres: Array<{ genre_name: string; avg_playtime_2weeks: number; genreID: string }>;
+}
+
+interface ChartsProps {
+  data: ChartData;
+}
+
+export async function Charts({data}: ChartsProps) {
   const chartData = [
     {cat: "free", games: data.freeGames, fill: "var(--color-free)"},
     {cat: "paid", games: data.paidGames, fill: "var(--color-paid)"},
@@ -116,7 +134,14 @@ export async function Charts({data}) {
     "fill": `var(--color-${item.genreID})`,
   }));
 
-  const baseConfig = {
+  interface ChartConfig {
+    [key: string]: {
+      label: string;
+      color?: string;
+    };
+  }
+
+  const baseConfig: ChartConfig = {
     "Playtime": {
       label: "Playtime",
     },
