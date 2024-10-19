@@ -40,17 +40,17 @@ export default async function Report1() {
   if (trendingGenresError) throw new Error(trendingGenresError.message);
 
   const reportData = {
-    freeGames,
-    paidGames,
-    windowsGames,
-    macGames,
-    linuxGames,
-    topdevs,
-    toppubs,
-    gamesReleased,
-    highestGameUpvotes,
-    highestGameDownvotes,
-    trendingGenres
+    freeGames: freeGames || 0,
+    paidGames: paidGames || 0,
+    windowsGames: windowsGames || 0,
+    macGames: macGames || 0,
+    linuxGames: linuxGames || 0,
+    topdevs: topdevs || [],
+    toppubs: toppubs || [],
+    gamesReleased: gamesReleased || [],
+    highestGameUpvotes: highestGameUpvotes || { name: '', positive: 0, negative: 0 },
+    highestGameDownvotes: highestGameDownvotes || { name: '', positive: 0, negative: 0 },
+    trendingGenres: trendingGenres || []
   };
 
   return (
