@@ -36,7 +36,7 @@ interface ChartData {
   gamesReleased: Array<{ release_year: number; game_count: number }>;
   highestGameUpvotes: { name: string; positive: number; negative: number };
   highestGameDownvotes: { name: string; positive: number; negative: number };
-  trendingGenres: Array<{ genre_name: string; avg_playtime_2weeks: number; genreID: string }>;
+  trendingGenres: Array<{ genre_name: string; avg_playtime_2weeks: number; genreID: number }>;
 }
 
 interface ChartsProps {

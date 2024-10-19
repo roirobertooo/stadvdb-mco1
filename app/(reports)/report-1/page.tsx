@@ -3,9 +3,6 @@ import {supabase} from "@/utils/supabase/client";
 import {Charts} from "./overview_components";
 
 export default async function Report1() {
-  const {data: totalGames, error: gamesError} = await supabase.rpc('get_total_games');
-  if (gamesError) throw new Error(gamesError.message);
-
   const {data: freeGames, error: freeError} = await supabase.rpc('get_free_games');
   if (freeError) throw new Error(freeError.message);
 
@@ -43,7 +40,6 @@ export default async function Report1() {
   if (trendingGenresError) throw new Error(trendingGenresError.message);
 
   const reportData = {
-    totalGames,
     freeGames,
     paidGames,
     windowsGames,
