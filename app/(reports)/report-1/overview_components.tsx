@@ -25,6 +25,7 @@ import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent,} from "@
 import * as React from "react"
 import {TrendingDown} from "lucide-react"
 
+// @ts-ignore
 export async function Charts({data}) {
   const chartData = [
     {cat: "free", games: data.freeGames, fill: "var(--color-free)"},
@@ -61,7 +62,7 @@ export async function Charts({data}) {
     },
   } satisfies ChartConfig
 
-  const releaseData = data.gamesReleased.map((item) => ({
+  const releaseData = data.gamesReleased.map((item: { release_year: any; game_count: any; }) => ({
     "Year": item.release_year,
     "Games": item.game_count,
   }));
@@ -73,8 +74,8 @@ export async function Charts({data}) {
     },
   } satisfies ChartConfig
 
-  const thisYearGames = releaseData.find(item => item.Year === 2024)?.Games || 0;
-  const lastYearGames = releaseData.find(item => item.Year === 2023)?.Games || 0;
+  const thisYearGames = releaseData.find((item: { Year: number; }) => item.Year === 2024)?.Games || 0;
+  const lastYearGames = releaseData.find((item: { Year: number; }) => item.Year === 2023)?.Games || 0;
 
   const trendPercent = ((thisYearGames - lastYearGames) / lastYearGames) * 100;
 
@@ -110,7 +111,11 @@ export async function Charts({data}) {
     },
   } satisfies ChartConfig;
 
-  const trendingGenreData = data.trendingGenres.map((item) => ({
+  const trendingGenreData = data.trendingGenres.map((item: {
+    genre_name: any;
+    avg_playtime_2weeks: any;
+    genreID: any;
+  }) => ({
     "Genre": item.genre_name,
     "Playtime": item.avg_playtime_2weeks,
     "fill": `var(--color-${item.genreID})`,
@@ -122,7 +127,12 @@ export async function Charts({data}) {
     },
   };
 
-  const trendingGenreConfig = data.trendingGenres.reduce((config, item, index) => {
+  const trendingGenreConfig = data.trendingGenres.reduce((config: {
+    [x: string]: { label: any; color: string; };
+  }, item: {
+    genreID: string | number;
+    genre_name: any;
+  }, index: number) => {
     const colorIndex = (index % 5) + 1;
     config[item.genreID] = {
       label: item.genre_name,
@@ -131,6 +141,8 @@ export async function Charts({data}) {
     return config;
   }, baseConfig) satisfies ChartConfig;
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div
       className="chart-wrapper mx-auto flex max-w-6xl flex-col flex-wrap items-start justify-center gap-6 p-6 sm:flex-row sm:p-8">
@@ -283,9 +295,17 @@ export async function Charts({data}) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.topdevs.map((dev) => (
+              {data.topdevs.map((dev: {
+                developer_name: boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | React.Key | null | undefined;
+                total_estimated_owners: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined;
+                total_revenue: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined;
+              }) => (
+                // @ts-ignore
                 <TableRow key={dev.developer_name}>
-                  <TableCell className="font-medium">{dev.developer_name}</TableCell>
+                  <TableCell className="font-medium">
+                    {/*@ts-ignore*/}
+                    {dev.developer_name}
+                  </TableCell>
                   <TableCell
                     className="text-right">{dev.total_estimated_owners}</TableCell> {/* This is games sold also */}
                   <TableCell className="text-right">{dev.total_revenue}</TableCell>
@@ -307,9 +327,17 @@ export async function Charts({data}) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.toppubs.map((pub) => (
+              {data.toppubs.map((pub: {
+                publisher_name: boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | React.Key | null | undefined;
+                total_estimated_owners: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined;
+                total_revenue: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined;
+              }) => (
+                // @ts-ignore
                 <TableRow key={pub.publisher_name}>
-                  <TableCell className="font-medium">{pub.publisher_name}</TableCell>
+                  <TableCell className="font-medium">
+                    {/*@ts-ignore*/}
+                    {pub.publisher_name}
+                  </TableCell>
                   <TableCell
                     className="text-right">{pub.total_estimated_owners}</TableCell> {/* This is games sold also */}
                   <TableCell className="text-right">{pub.total_revenue}</TableCell>
