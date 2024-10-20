@@ -3,43 +3,45 @@ import {supabase} from "@/utils/supabase/client";
 import {Charts} from "./overview_components";
 
 export default async function Report1() {
-  const [
-    {data: freeGames, error: freeError},
-    {data: paidGames, error: paidError},
-    {data: windowsGames, error: windowsError},
-    {data: macGames, error: macError},
-    {data: linuxGames, error: linuxError},
-    {data: topdevs, error: topdevsError},
-    {data: toppubs, error: toppubsError},
-    {data: gamesReleased, error: gamesReleasedError},
-    {data: highestGameUpvotes, error: highestGameUpvotesError},
-    {data: highestGameDownvotes, error: highestGameDownvotesError},
-    {data: trendingGenres, error: trendingGenresError}
-  ] = await Promise.all([
-    supabase.rpc('get_free_games'),
-    supabase.rpc('get_paid_games'),
-    supabase.rpc('get_windows_games'),
-    supabase.rpc('get_mac_games'),
-    supabase.rpc('get_linux_games'),
-    supabase.rpc('get_top5_devs'),
-    supabase.rpc('get_top5_pubs'),
-    supabase.rpc('get_games_released_5'),
-    supabase.rpc('get_highest_game_upvote'),
-    supabase.rpc('get_highest_game_downvote'),
-    supabase.rpc('get_trending_genres_final')
-  ]);
+const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms, { data: null, error: null }));
 
-  if (freeError) throw new Error(freeError.message);
-  if (paidError) throw new Error(paidError.message);
-  if (windowsError) throw new Error(windowsError.message);
-  if (macError) throw new Error(macError.message);
-  if (linuxError) throw new Error(linuxError.message);
-  if (topdevsError) throw new Error(topdevsError.message);
-  if (toppubsError) throw new Error(toppubsError.message);
-  if (gamesReleasedError) throw new Error(gamesReleasedError.message);
-  if (highestGameUpvotesError) throw new Error(highestGameUpvotesError.message);
-  if (highestGameDownvotesError) throw new Error(highestGameDownvotesError.message);
-  if (trendingGenresError) throw new Error(trendingGenresError.message);
+const [
+  {data: freeGames, error: freeError},
+  {data: paidGames, error: paidError},
+  {data: windowsGames, error: windowsError},
+  {data: macGames, error: macError},
+  {data: linuxGames, error: linuxError},
+  {data: topdevs, error: topdevsError},
+  {data: toppubs, error: toppubsError},
+  {data: gamesReleased, error: gamesReleasedError},
+  {data: highestGameUpvotes, error: highestGameUpvotesError},
+  {data: highestGameDownvotes, error: highestGameDownvotesError},
+  {data: trendingGenres, error: trendingGenresError}
+] = await Promise.all([
+  Promise.race([supabase.rpc('get_free_games'), timeout(5000)]),
+  Promise.race([supabase.rpc('get_paid_games'), timeout(5000)]),
+  Promise.race([supabase.rpc('get_windows_games'), timeout(5000)]),
+  Promise.race([supabase.rpc('get_mac_games'), timeout(5000)]),
+  Promise.race([supabase.rpc('get_linux_games'), timeout(5000)]),
+  Promise.race([supabase.rpc('get_top5_devs'), timeout(5000)]),
+  Promise.race([supabase.rpc('get_top5_pubs'), timeout(5000)]),
+  Promise.race([supabase.rpc('get_games_released_5'), timeout(5000)]),
+  Promise.race([supabase.rpc('get_highest_game_upvote'), timeout(5000)]),
+  Promise.race([supabase.rpc('get_highest_game_downvote'), timeout(5000)]),
+  Promise.race([supabase.rpc('get_trending_genres_final'), timeout(5000)])
+]);
+
+if (freeError) console.error(freeError.message);
+if (paidError) console.error(paidError.message);
+if (windowsError) console.error(windowsError.message);
+if (macError) console.error(macError.message);
+if (linuxError) console.error(linuxError.message);
+if (topdevsError) console.error(topdevsError.message);
+if (toppubsError) console.error(toppubsError.message);
+if (gamesReleasedError) console.error(gamesReleasedError.message);
+if (highestGameUpvotesError) console.error(highestGameUpvotesError.message);
+if (highestGameDownvotesError) console.error(highestGameDownvotesError.message);
+if (trendingGenresError) console.error(trendingGenresError.message);
 
   const reportData = {
     freeGames: freeGames || 0,
