@@ -2,8 +2,14 @@ import React from "react";
 import {supabase} from "@/utils/supabase/client";
 import {Charts} from "./overview_components";
 
+type RpcResponse<T> = {
+  data: T | null;
+  error: { message: string } | null;
+};
+
 export default async function Report1() {
-  const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms, {data: null, error: null}));
+  const timeout = <T, >(ms: number): Promise<RpcResponse<T>> =>
+    new Promise(resolve => setTimeout(resolve, ms, {data: null, error: null}));
 
   const [
     {data: freeGames, error: freeError},
