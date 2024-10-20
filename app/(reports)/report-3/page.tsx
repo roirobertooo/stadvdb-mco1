@@ -51,7 +51,8 @@ export default function Report3() {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <form onSubmit={handleSubmit} className="mb-4">
+      <div className="font-bold text-3xl mb-16">Average Peak CCU Analysis: Positive vs Negative Reviews</div>
+      <form onSubmit={handleSubmit} className="mb-16">
         <label htmlFor="threshold" className="mr-2">Enter Threshold Value:</label>
         <input id="threshold" type="number" value={thresholdValue} onChange={(e) => setThresholdValue(Number(e.target.value))} className="border rounded p-1" required/>
         <button type="submit" className="ml-2 bg-blue-500 text-white p-2 rounded">

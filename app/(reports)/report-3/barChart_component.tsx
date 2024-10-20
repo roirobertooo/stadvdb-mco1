@@ -1,4 +1,3 @@
-// BarChart.tsx
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
 
 interface BarChartProps {
