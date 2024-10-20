@@ -34,12 +34,12 @@ function Report4_1() {
     }, []);
 
     if (loading) {
-        return <p>Loading data...</p>;
+        return <div className="loader"></div>;
     }
 
     return (
         <div className="w-3/4 flex flex-col self-center p-3">
-            <div className="font-bold text-3xl">Platform Support by Year (2013-2023)</div>
+            <div className="font-bold text-2xl py-5">Platform Support by Year (2013-2023)</div>
 
             {/* Shadcn-styled Card with Line Chart */}
             <Card>
@@ -50,7 +50,7 @@ function Report4_1() {
                     {platformData.length > 0 ? (
                         <LineChartComponent data={platformData} />
                     ) : (
-                        <p>No data available for this report.</p>  // Shows a message if no data is available
+                      <div className="loader"></div>  // Shows a message if no data is available
                     )}
                 </CardContent>
             </Card>
@@ -87,11 +87,11 @@ function Report4_2() {
 
     return (
         <div className="w-3/4 flex flex-col self-center p-3">
-            <div className="font-bold text-3xl">Average Playtime by Platform</div>
+            <div className="font-bold text-2xl pt-5">Average Playtime by Platform</div>
 
             {/* Year selection dropdown */}
             <div className="my-4">
-                <label htmlFor="yearSelect" className="block mb-2">Select Year</label>
+                <label htmlFor="yearSelect" className="block mb-2 font-medium">Select Year</label>
                 <select
                     id="yearSelect"
                     value={selectedYear}
@@ -123,7 +123,7 @@ function Report4_2() {
 export default function Report4() {
     return (
         <div className="w-3/4 flex flex-col self-center p-3">
-            <div className="font-bold text-3xl">Report 4: Platforms</div>
+            <div className="font-bold text-3xl">Platform Report</div>
             <div className="container mx-auto">
                 <Report4_1 />  {/* Line Chart for Platform Support */}
                 <Report4_2 />  {/* Bar Chart for Playtime */}
