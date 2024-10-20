@@ -18,10 +18,10 @@ export default async function Report1() {
   const {data: linuxGames, error: linuxError} = await supabase.rpc('get_linux_games');
   if (linuxError) throw new Error(linuxError.message);
 
-  const {data: topdevs, error: topdevsError} = await supabase.rpc('get_top5_devs', {setTimeout: 1000});
+  const {data: topdevs, error: topdevsError} = await supabase.rpc('get_top5_devs', {timeout: 1000});
   if (topdevsError) throw new Error(topdevsError.message);
 
-  const {data: toppubs, error: toppubsError} = await supabase.rpc('get_top5_pubs', {setTimeout: 1000});
+  const {data: toppubs, error: toppubsError} = await supabase.rpc('get_top5_pubs', {timeout: 1000});
   if (toppubsError) throw new Error(toppubsError.message);
 
   const {data: gamesReleased, error: gamesReleasedError} = await supabase.rpc('get_games_released_5');
