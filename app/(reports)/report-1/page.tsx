@@ -1,8 +1,9 @@
 import React from "react";
 import { supabase } from "@/utils/supabase/client";
 import { Charts } from "./overview_components";
+import { PostgrestFilterBuilder } from "@supabase/postgrest-js";
 
-const fetchWithTimeout = (promise, timeout) => {
+const fetchWithTimeout = (promise: PostgrestFilterBuilder<any, any, any, unknown, unknown>, timeout: number | undefined) => {
   return Promise.race([
     promise,
     new Promise((_, reject) => setTimeout(() => reject(new Error("Request timed out")), timeout))
