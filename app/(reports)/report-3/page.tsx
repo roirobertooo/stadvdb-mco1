@@ -68,7 +68,7 @@ export default function Report3() {
           <p>Enter a threshold value to view the average peak CCU of games whose positive reviews are greater than the
             threshold</p>
         ) : loading ? (
-          <p>Loading data...</p>
+          <div className="loader"></div>
         ) : error ? (
           <p>{error}</p>
         ) : (
