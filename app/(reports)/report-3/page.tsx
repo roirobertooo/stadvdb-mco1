@@ -156,7 +156,7 @@ function Report3_2() {
           ))}
         </select>
         <button type="submit" className="ml-4 bg-blue-500 text-primary p-1 px-3 rounded">
-          Submit
+          Enter
         </button>
       </form>
 
