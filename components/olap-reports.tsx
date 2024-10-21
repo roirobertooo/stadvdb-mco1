@@ -17,7 +17,7 @@ export default function OlapReports() {
       </Link>
       <Link href="/report-4" className="flex items-center gap-4 p-4 text-primary rounded-lg border-2 border-primary hover:border-background
                     hover:bg-primary hover:text-background transition-all ease-linear duration-100">
-          <span className="text-xl font-medium">Report 4</span>
+          <span className="text-xl font-medium">Platform Report</span>
       </Link>
     </div>
   );
