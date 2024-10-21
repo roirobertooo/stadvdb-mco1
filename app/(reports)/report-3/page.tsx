@@ -2,8 +2,9 @@
 import { supabase } from '@/utils/supabase/client';
 import { useEffect, useState } from 'react';
 import BarChartComponent from './barChart_component';
+import BarLineChartComponent from './barAndLineChart_component';
 
-export default function Report3() {
+function Report3_1() {
   const [thresholdValue, setThresholdValue] = useState<number>(1); // Default threshold value
   const [averagePeakCcuPositive, setAveragePeakCcuPositive] = useState<number | null>(null);
   const [averagePeakCcuNegative, setAveragePeakCcuNegative] = useState<number | null>(null);
@@ -54,9 +55,79 @@ export default function Report3() {
       <div className="font-bold text-3xl mb-16">Average Peak CCU Analysis: Positive vs Negative Reviews</div>
       <form onSubmit={handleSubmit} className="mb-16">
         <label htmlFor="threshold" className="mr-2">Enter Threshold Value:</label>
-        <input id="threshold" type="number" value={thresholdValue} onChange={(e) => setThresholdValue(Number(e.target.value))} className="border rounded p-1" required/>
+        <input
+          id="threshold"
+          type="number"
+          value={thresholdValue}
+          onChange={(e) => setThresholdValue(Number(e.target.value))}
+          className="border rounded p-1"
+          required
+        />
         <button type="submit" className="ml-2 bg-blue-500 text-white p-2 rounded">
-          Enter
+          Submit
+        </button>
+      </form>
+
+      {loading ? (
+        <p className='mb-16'>Loading data...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <div className="w-full flex flex-col items-center mb-16">
+          <h2>Average Peak CCU of Games whose positive reviews are greater than a threshold of {thresholdValue} compared to its negative counterpart.</h2>
+          <BarChartComponent positiveAvg={averagePeakCcuPositive} negativeAvg={averagePeakCcuNegative} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Report3_2() {
+  const [quarterlyCcu, setQuarterlyCcu] = useState<Array<{ quarter: string, avg_peak_ccu: number }> | null>(null); // State for quarterly data
+  const [yearInput, setYearInput] = useState<number>(2022); // State for year input
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const getQuarterlyCcu = async () => {
+    setLoading(true);
+
+    // Fetch quarterly CCU average based on the year input
+    const { data: quarterlyData, error: quarterlyCcuError } = await supabase.rpc('get_avg_peak_ccu', {
+      year_input: yearInput,
+    });
+
+    if (quarterlyCcuError) {
+      console.error(quarterlyCcuError);
+      setError('Failed to fetch data for quarterly CCU average.');
+      setLoading(false);
+      return;
+    }
+
+    setQuarterlyCcu(quarterlyData);
+
+    setLoading(false);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    getQuarterlyCcu(); 
+  };
+
+  return (
+    <div className="flex flex-col justify-center items-center">
+      <div className="font-bold text-3xl mb-16">Quarterly Average Peak CCU Analysis Given A Year</div>
+      <form onSubmit={handleSubmit} className="mb-16">
+        <label htmlFor="year" className="mr-2">Enter Year:</label>
+        <input
+          id="year"
+          type="number"
+          value={yearInput}
+          onChange={(e) => setYearInput(Number(e.target.value))}
+          className="border rounded p-1"
+          required
+        />
+        <button type="submit" className="ml-2 bg-blue-500 text-white p-2 rounded">
+          Submit
         </button>
       </form>
 
@@ -65,11 +136,27 @@ export default function Report3() {
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <div className='w-full flex flex-col items-center'>
-          <h2>Report 3: Average Peak CCU of Games whose positive reviews are greater than a threshold of {thresholdValue} compared to its negative counterpart.</h2>
-          <BarChartComponent positiveAvg={averagePeakCcuPositive} negativeAvg={averagePeakCcuNegative} />
+        <div className="w-full flex flex-col items-center">
+          {quarterlyCcu && quarterlyCcu.length > 0 && (
+            <>
+              <h2 className='mb-10'>Quarterly Average Peak CCU for {yearInput}:</h2>
+              <BarLineChartComponent quarterlyCcu={quarterlyCcu} />
+            </>
+          )}
         </div>
       )}
+    </div>
+  );
+}
+
+export default function Report3() {
+  return (
+    <div className="w-3/4 flex flex-col self-center p-3">
+      <div className="font-bold text-3xl mb-24">Peak Concurrent Players Analysis</div>
+      <div className="container mx-auto">
+        <Report3_1/>
+        <Report3_2/>
+      </div>
     </div>
   );
 }
