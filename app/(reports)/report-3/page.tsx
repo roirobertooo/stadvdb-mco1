@@ -84,9 +84,27 @@ function Report3_1() {
 
 function Report3_2() {
   const [quarterlyCcu, setQuarterlyCcu] = useState<Array<{ quarter: string, avg_peak_ccu: number }> | null>(null); // State for quarterly data
-  const [yearInput, setYearInput] = useState<number>(2022); // State for year input
+  const [yearInput, setYearInput] = useState<number | null>(null);
+  const [years, setYears] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const getAvailableYears = async () => {
+    const { data, error } = await supabase.rpc('get_all_years'); 
+
+    if (error) {
+      console.error(error);
+      setError('Failed to fetch available years.');
+      return;
+    }
+
+    setYears(data);
+
+    // selecting lowest possible year
+    if (data && data.length > 0) {
+      setYearInput(Math.min(...data));
+    }
+  };
 
   const getQuarterlyCcu = async () => {
     setLoading(true);
@@ -113,19 +131,28 @@ function Report3_2() {
     getQuarterlyCcu(); 
   };
 
+  useEffect(() => {
+    getAvailableYears();
+  }, []);
+
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="font-bold text-3xl mb-16">Quarterly Average Peak CCU Analysis Given A Year</div>
       <form onSubmit={handleSubmit} className="mb-16">
-        <label htmlFor="year" className="mr-2">Enter Year:</label>
-        <input
+        <label htmlFor="year" className="mr-2">Select Year:</label>
+        <select
           id="year"
-          type="number"
-          value={yearInput}
+          value={yearInput || ''} // Handle null case
           onChange={(e) => setYearInput(Number(e.target.value))}
           className="border rounded p-1"
           required
-        />
+        >
+          {years.map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
         <button type="submit" className="ml-2 bg-blue-500 text-white p-2 rounded">
           Submit
         </button>
