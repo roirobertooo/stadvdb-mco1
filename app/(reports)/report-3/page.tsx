@@ -41,6 +41,16 @@ function Report3_1() {
       return;
     }
 
+    // Check if thresholdValue is negative
+    if (thresholdValue < 0) {
+      setError('Threshold value cannot be negative.');
+      setLoading(false);
+      return;
+    }
+
+    // Clear error if value is valid and fetch CCU data
+    setError(null);
+
     setAveragePeakCcuNegative(negativeData);
 
     setLoading(false);
