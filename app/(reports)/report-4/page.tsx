@@ -26,9 +26,9 @@ function Report4_1() {
         { label: 'Windows & Mac Support', value: 'windowsMacSupport' },
         { label: 'Windows & Linux Support', value: 'windowsLinuxSupport' },
         { label: 'Mac & Linux Support', value: 'macLinuxSupport' },
-        { label: 'Windows Only Support', value: 'windowsOnlySupport' },
-        { label: 'Mac Only Support', value: 'macOnlySupport' },
-        { label: 'Linux Only Support', value: 'linuxOnlySupport' },
+        { label: 'Windows Support', value: 'windowsOnlySupport' },
+        { label: 'Mac Support', value: 'macOnlySupport' },
+        { label: 'Linux Support', value: 'linuxOnlySupport' },
     ];
 
     const fetchPlatformData = async () => {
