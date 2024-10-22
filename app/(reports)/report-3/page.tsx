@@ -47,6 +47,15 @@ function Report3_1() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Check if thresholdValue is negative
+    if (thresholdValue < 0) {
+      setError('Threshold value cannot be negative.');
+      return;
+    }
+
+    // Clear error if value is valid and fetch CCU data
+    setError(null);
     getCcu();
   };
 
