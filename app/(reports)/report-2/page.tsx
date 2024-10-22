@@ -782,7 +782,12 @@ function Report2_4() {
                 console.error(error);
             } else {
                 const transformedData = data.reduce((acc: { [x: string]: any; }, curr: { month: { toString: () => string | number; }; category_name: any; }) => {
-                    acc[curr.month.toString()] = curr.category_name;
+                    const month = curr.month.toString();
+                    if (acc[month]) {
+                        acc[month] += `, ${curr.category_name}`;
+                    } else {
+                        acc[month] = curr.category_name;
+                    }
                     return acc;
                 }, {year: Number(value)});
                 const tableData = [transformedData];
